@@ -18,10 +18,11 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="index.php">Homepage</a></li>
+            <li><a class="dropdown-item" href="produkte.php">Produkte</a></li>
            
             <li><a class="dropdown-item" href="dashboard.php">Dashboard</a></li>
             <?php
-            if( $_SESSION['uid'] ):?>
+            if( isset($_SESSION['uid']) ):?>
 
          
             

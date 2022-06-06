@@ -8,6 +8,35 @@
     <title>Document</title>
 </head>
 <body>
+ 
+  
+  <?php include_once("header.php");
+
+  function input_check($data){
+      $data = trim($data);
+      $data = stripcslashes($data);
+      $data = htmlspecialchars($data);
+      return $data;
+  }
+   include_once('includes/db.php');
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+           
+      $productName =input_check($_POST['productName']);
+      $description = input_check($_POST['description']);
+      $price = input_check($_POST['price']);     
+      $quantity = input_check($_POST['quantity']); 
+ 
+      $query = "insert into products (name,description,price,quantity) values('$productName','$description','$price','$quantity')";
+
+      $result = mysqli_multi_query($con,$query);
+      if($result){
+          echo '<script>alert("new product added!!")</script>';
+      }
+
+}
+      
+
+  ?>
     
 <div class="container">
     <h1>Add Product</h1>
@@ -19,12 +48,12 @@
         <form method ="post">
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <input type="text" id="vorname" class="form-control form-control-lg" name="product-name" />
+            <input type="text" id="productName" class="form-control form-control-lg" name="productName" />
             <label class="form-label" for="form1Example13">Product Name</label>
           </div>
 
           <div class="form-outline mb-4">
-            <input type="text" id="nachname" class="form-control form-control-lg" name="description" />
+            <textarea type="text" id="nachname" class="form-control form-control-lg" name="description" > </textarea>
             <label class="form-label" for="form1Example13">description</label>
           </div>
           <div class="form-outline mb-4">
@@ -34,7 +63,7 @@
 
           <!-- Password input -->
           <div class="form-outline mb-4">
-            <input type="number" id="quantity" class="form-control form-control-lg" name="auantity" />
+            <input type="number" id="quantity" class="form-control form-control-lg" name="quantity" />
             <label class="form-label" for="form1Example23">Quantity</label>
           </div>
           <div class="form-outline mb-4">
