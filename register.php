@@ -9,35 +9,9 @@
 </head>
 <body>
 <?php include_once("header.php");
-function sha512($str,$salt){
-    $hashedpass = hash("sha512",$str.$salt);
-    return $hashedpass;
-}
-function input_check($data){
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
- include_once('includes/db.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   
-    
-    $vorname =input_check($_POST['vorname']);
-    $nachname = input_check($_POST['nachname']);
-    $email = input_check($_POST['email']);
-   // $password = md5($_POST['password']);
-   $password = sha512(mt_rand(10000000,99999999),'abceree334234');
-     
-    echo '<script>alert("after send  post data")</script>';
-   $query = "insert into users (vorname,nachname,email,password) values('$vorname','$nachname','$email','$password')";
-  // echo $query;
-   $result = mysqli_multi_query($con,$query);
-    if($result){
-        echo '<script>alert("you are registered!")</script>';
-    }
 
-}
+ include_once('includes/db.php');
+
 
 ?>
 
@@ -52,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           class="img-fluid" alt="Phone image">
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <form id="reg-form" method ="post" onsubmit="submitForm()">
+        <form id="register">
           <!-- Email input -->
           <div class="form-outline mb-4">
             <input type="text" id="vorname" class="form-control form-control-lg" name="vorname" />
@@ -99,24 +73,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 <?php include_once("footer.php") ?> 
  <script>
-   function submitForm(){
-    $('#ref-form').submit(function(event){
-    event.preventDefault();
+     $("document").ready(function(){
+      $('#register').submit(function(event){
+          event.preventDefault();
+          if($('#vorname').val() === "" || $('#nachname').val()=== "" || $('#email').val() === "" ){
+            alert("inputs must not empty!!!");
+            return false;
+          }
+         
+        
+          $.ajax({
+            type:"POST",
+            url:"emailCheck.php",
+            data :{email : $('#email').val(),
+                   vorname: $('#vorname').val(),
+                   nachname :$('#nachname').val()                  
+                    
+            },
+            success: function(data){
+              alert(data);
+              
+            },
+            error : function(err){
+              alert(err);
+            }
+          });
+  
+         
    });
-   }
-   $('#email').change(function(event){
-    $.ajax({
-      type:"POST",
-      url:"emailCheck.php",
-      data :{email : $(this).val()},
-      success: function(data){
-        console.log("data response",data);
-        if(!data){
-          return false;
-        }
-      }
-    })
-   });
+     })
+   
+  
+ 
  </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
