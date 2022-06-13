@@ -25,7 +25,7 @@
             if( isset($_SESSION['uid']) ):?>
 
          
-            
+            <li><a class="dropdown-item" href="warenkorb.php">Warenkorb</a></li>
             <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             <?php  else: ?> 
               <li><a class="dropdown-item" href="login.php">Login</a></li>
@@ -43,12 +43,15 @@
       </form>
       <form class="d-flex">
         
-                 
-                        <button class="btn btn-outline-light" type="submit">
+                     
+                        <a href="warenkorb.php" class="btn btn-outline-light" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
+                            
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
+                            
+                       </a>
+                        
                         
       </form>
       

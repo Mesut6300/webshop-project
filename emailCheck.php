@@ -1,9 +1,11 @@
 <?php 
 include_once('includes/db.php');
+// function for password hash
 function sha512($str,$salt){
   $hashedpass = hash("sha512",$str.$salt);
   return $hashedpass;
 }
+// function to cloean inputs
 function input_check($data){
   $data = trim($data);
   $data = stripcslashes($data);
@@ -28,16 +30,20 @@ else{ // email ist nicht existeirt
   $nachname = input_check($_POST['nachname']);
   $emailInput  = input_check($_POST['email']);
  // $password = md5($_POST['password']);
- $password = sha512(mt_rand(10000000,99999999),'abceree334234');
+ // standars password ist : pass-web
+ $password = sha512("pass-web",'abceree334234');
    
 
  $query = "insert into users (vorname,nachname,email,password) values('$vorname','$nachname','$emailInput','$password')";
 // echo $query;
  $result = mysqli_multi_query($con,$query);
-  if($result){
-    $link = "http:localhost/webshop/changePassword.php?pass=".$password;
-     //echo "user registerd successfully";
-     echo $link;
+  if($result){ // user registerd 
+    
+     echo "user registerd successfully";
+
+     // email send 
+     // after login show form to change password
+    
     
 
   }
