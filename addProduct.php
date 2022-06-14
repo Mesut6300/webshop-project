@@ -17,17 +17,18 @@
       $data = stripcslashes($data);
       $data = htmlspecialchars($data);
       return $data;
-  }
-   include_once('includes/db.php');
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  } 
+   include_once('includes/db.php'); // datenbank verbindung
+  if ($_SERVER["REQUEST_METHOD"] == "POST") { // form werte
            
       $productName =input_check($_POST['productName']);
       $description = input_check($_POST['description']);
       $price = input_check($_POST['price']);     
-      $quantity = input_check($_POST['quantity']); 
- 
-      $query = "insert into products (name,description,price,quantity) values('$productName','$description','$price','$quantity')";
-
+      $quantity = input_check($_POST['quantity']);
+      $image =  input_check($_POST['image']);
+      
+      $query = "insert into products (name,description,price,quantity,image) values('$productName','$description','$price','$quantity','$image')";
+      echo $query;
       $result = mysqli_multi_query($con,$query);
       if($result){
           echo '<script>alert("new product added!!")</script>';
@@ -67,7 +68,7 @@
             <label class="form-label" for="form1Example23">Quantity</label>
           </div>
           <div class="form-outline mb-4">
-            <input type="file" id="image" class="form-control form-control-lg" name="imagw" />
+            <input type="text" id="image" class="form-control form-control-lg" name="image" />
             <label class="form-label" for="image">Image</label>
           </div>
 
