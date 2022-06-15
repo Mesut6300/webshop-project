@@ -1,5 +1,18 @@
 <?php 
 include_once('includes/db.php');
+
+// random password generator 
+function getRandom($n) {
+  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $randomString = '';
+
+  for ($i = 0; $i < $n; $i++) {
+      $index = rand(0, strlen($characters) - 1);
+      $randomString .= $characters[$index];
+  }
+
+  return $randomString;
+}
 // function for password hash
 function sha512($str,$salt){
   $hashedpass = hash("sha512",$str.$salt);
@@ -31,10 +44,11 @@ else{ // email ist nicht existeirt
   $emailInput  = input_check($_POST['email']);
  // $password = md5($_POST['password']);
  // standars password ist : pass-web
- $password = sha512("pass-web",'abceree334234');
+ $randomPassword = getRandom(8);
+ $password = sha512($randomPassword,'abceree334234');
    
 
- $query = "insert into users (vorname,nachname,email,password) values('$vorname','$nachname','$emailInput','$password')";
+ $query = "insert into users (vorname,nachname,email,password,initialPass) values('$vorname','$nachname','$emailInput','$password','$$randomPassword')";
 // echo $query;
  $result = mysqli_multi_query($con,$query);
   if($result){ // user registerd 

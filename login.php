@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $email = input_check($_POST['email']);
   $password = sha512($_POST['password'],'abceree334234');
   $query = "select id,vorname from users where email='$email' && password = '$password' ";
- 
+  echo $_POST['password'];
   $result = mysqli_fetch_array(mysqli_query($con,$query));
   if($result > 0){
     $_SESSION['uid'] = $result["id"];

@@ -25,7 +25,7 @@
     <div class="carousel-inner">
       <div class="carousel-item active">
       
-       <img style="width:100%;height:500px" src="https://images.pexels.com/photos/4144531/pexels-photo-4144531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+       <img style="width:100%;height:500px" src="https://www.test.de/file/image/35/35/c9c7568b-f4b4-4e1f-a642-3473e5132595-web/5752472_Smartphones-072021_neu.jpg" alt="">
         
         <div class="container">
           <div class="carousel-caption text-start">
@@ -38,24 +38,24 @@
         </div>
       </div>
       <div class="carousel-item">
-       <img style="height:500px;width:100%" src="https://images.pexels.com/photos/1440727/pexels-photo-1440727.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+       <img style="height:500px;width:100%" src="https://blog.notebooksbilliger.de/wp-content/uploads/2020/03/Kaufberater-g%C3%BCnstige-Office-Notebooks-Twitter.jpg" alt="">
 
         <div class="container">
           <div class="carousel-caption">
-            <h1>Another example headline.</h1>
-            <p>Some representative placeholder content for the second slide of the carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+            <h1>Riesen Auswahl an Notebooks</h1>
+            
+            <p><a class="btn btn-lg btn-primary" href="#">Zu den Angeboten</a></p>
           </div>
         </div>
       </div>
       <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
+      <img style="height:500px;width:100%" src="https://marketing-media.flip4new.de/seobilder/Gebrauchte-Konsole-verkaufen-online.png" alt="">
 
         <div class="container">
           <div class="carousel-caption text-end">
-            <h1>One more for good measure.</h1>
-            <p>Some representative placeholder content for the third slide of this carousel.</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+            <h1>Konsolen fast ausverkauft</h1>
+            <p>Nur heute, keine Versandkosten</p>
+            <p><a class="btn btn-lg btn-primary" href="#">Hier klicken</a></p>
           </div>
         </div>
       </div>
