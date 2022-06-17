@@ -50,7 +50,7 @@
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span id="warenkorb-num" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                             
                        </a>
                         

@@ -68,7 +68,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a onclick="addToCart()" class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a pid="<?php echo $row['id']; ?>"  href="#" class="btn btn-outline-dark mt-auto add-btn" >Add to cart</a></div>
                             </div>
               
               </div>
@@ -87,13 +87,6 @@
   
         <?php include_once("footer.php") ?> 
         
-       <script>
-        $("document").ready(function(){
-          function addToCart(){
-              alert("add");
-            }
-
-        }
-        </script>
+        <script src="functions.js"></script>
 </body>
 </html>
