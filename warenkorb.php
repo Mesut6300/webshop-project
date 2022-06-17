@@ -13,7 +13,7 @@
 </head>
 <body>
 <?php
-     session_start();
+   
     include_once('includes/db.php');
     include_once("header.php") ?> 
       <div class="container">

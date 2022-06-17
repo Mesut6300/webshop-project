@@ -10,7 +10,7 @@ function getRandom($n) {
       $index = rand(0, strlen($characters) - 1);
       $randomString .= $characters[$index];
   }
-
+  
   return $randomString;
 }
 // function for password hash
@@ -48,7 +48,7 @@ else{ // email ist nicht existeirt
  $password = sha512($randomPassword,'abceree334234');
    
 
- $query = "insert into users (vorname,nachname,email,password,initialPass) values('$vorname','$nachname','$emailInput','$password','$$randomPassword')";
+ $query = "insert into users (vorname,nachname,email,password,initialPass) values('$vorname','$nachname','$emailInput','$password','$randomPassword')";
 // echo $query;
  $result = mysqli_multi_query($con,$query);
   if($result){ // user registerd 

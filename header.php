@@ -1,3 +1,4 @@
+<?php  session_start(); ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="index.php">Webshop</a>
@@ -14,7 +15,8 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Pages
+          <?php echo (isset($_SESSION['uname']) ? ' <i class="fas fa-user"  ></i> '.$_SESSION['uname'] : 'Pages'); ?> 
+           
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="index.php">Homepage</a></li>
