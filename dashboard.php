@@ -41,7 +41,9 @@
     
     </div>
     <?php include_once("footer.php") ?> 
-  
+    <script>
+       warenkorb_count();
+    </script>
   
 </body>
 </html>

@@ -75,9 +75,9 @@
     <img src="./Images/store.png" class="d-block w-50" alt="...">
     <?php include_once("footer.php") ?> 
     
-    <script src="functions.js"></script>
+   
     <script>
-    warenkorb_product_list();
+       warenkorb_count();
     </script>
    
 </body>

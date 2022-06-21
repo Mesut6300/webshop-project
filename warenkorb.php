@@ -22,7 +22,7 @@
        <section class="h-100" style="background-color: #eee;">
   <div class="container h-100 py-5">
     <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-10">
+      <div class="col-10" id = "warebkorb-content">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="card rounded-3 mb-4">
+        <!-- <div class="card rounded-3 mb-4">
           <div class="card-body p-4">
             <div class="row d-flex justify-content-between align-items-center">
               <div class="col-md-2 col-lg-2 col-xl-2">
@@ -178,9 +178,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="card mb-4">
+        <!-- <div class="card mb-4">
           <div class="card-body p-4 d-flex flex-row">
             <div class="form-outline flex-fill">
               <input type="text" id="form1" class="form-control form-control-lg" />
@@ -188,7 +188,8 @@
             </div>
             <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
           </div>
-        </div>
+        </div> -->
+        
 
         <div class="card">
           <div class="card-body">
@@ -204,6 +205,10 @@
       </div>
     <?php include_once("footer.php") ?> 
   
+    <script>
+       warenkorb_count();
+       warenkorb_products_list()
+    </script>
    
 </body>
 </html>
