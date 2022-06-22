@@ -8,7 +8,9 @@ else{
  $user_id=0;
 }
 include_once('includes/db.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     if(isset($_POST['product_id'])){
         $product_id = $_POST["product_id"];
 
@@ -105,18 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $pro_total = $row['total_amount'];
 
                 }
-                // switch(true){
-                //     case  $quantity <= 8: 
-                //         $pro_total = $row['total_amount'];
-                //         break;
-                //     case $quantity < 16:  
-                //         $pro_total = $row['total_amount'] - ($row['total_amount'] * (8 / 100))  ; 
-                //         break;
-                //     case $quantity >= 16: 
-                //         $pro_total = $row['total_amount'] - ($row['total_amount'] * (16 / 100))  ; 
-                //         break;    
-
-                // }
                 
 
                 $price_array = array($pro_total);
@@ -178,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                  </div>
                 <div class="card">
                     <div class="card-body">
-                        <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                        <button type="button" class="btn btn-warning btn-block btn-lg proceed-to-pay">Proceed to Pay</button>
                     </div>
                 </div>';
         }
@@ -253,6 +243,371 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
  // ------  remove item from   basket (click on the trash button) end 
 
+ // -------------------proceed to pay start ---------------
+ if(isset($_POST['proceed'])){
+     if($user_id === 0){
+         echo ' <form method ="post">
+         <!-- Email input -->
+         <div class="form-outline mb-4">
+           <input type="email" id="email" class="form-control form-control-lg" name="email" />
+           <label class="form-label" for="form1Example13">Email address</label>
+         </div>
+
+         <!-- Password input -->
+         <div class="form-outline mb-4">
+           <input type="password" id="password" class="form-control form-control-lg" name="password" />
+           <label class="form-label" for="password">Password</label>
+         </div>
+
+         <div class="d-flex justify-content-around align-items-center mb-4">
+           <!-- Checkbox -->
+           <div class="form-check">
+             <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+             <label class="form-check-label" for="form1Example3"> Mich erinnern </label>
+           </div>
+           <a href="register.php">Register</a>
+         </div>
+
+         <!-- Submit button -->
+         <button type="submit" class="btn btn-primary btn-lg btn-block login-form">Einloggen</button>
+
+         
+
+        
+
+       </form>';
+    
+     }
+     else {
+        $q="select * from warenkorb where user_id='$user_id' ";
+        $result = mysqli_query($con,$q);
+        if(mysqli_num_rows( $result) >0){
+            $total_amt = 0;
+            while($row = mysqli_fetch_array($result)){
+                $order_id = $row['id'];
+                $product_id = $row['product_id'];
+                $user_id = $row['user_id'];
+                $product_name = $row['product_name'];
+                $product_image = $row['product_image'];
+                $quantity = $row['quantity'];
+                $price = $row['price'];
+                $discount = "0 %";
+                if( $quantity >= 8 && $quantity < 16 ){
+                    
+                    $pro_total = $row['total_amount'] - ($row['total_amount'] * (8 / 100))  ;
+                    $discount = "8 %";
+                }
+                else if($quantity >= 16){
+                    $pro_total = $row['total_amount'] - ($row['total_amount'] * (16 / 100))  ;
+                    $discount = "16 %";
+
+                }
+                else {
+                    $pro_total = $row['total_amount'];
+
+                }
+                
+
+                $price_array = array($pro_total);
+                $total_sum =  array_sum($price_array);
+                $total_amt = $total_amt + $total_sum;
+
+                // create bootstrap card with each order from basket
+                echo '<div class="card rounded-3 mb-4">
+                <div class="card-body p-4">
+                  <div class="row d-flex justify-content-between align-items-center">
+                    <div class="col-md-1 col-lg-1 col-xl-2">
+                      <img
+                        src="'.$product_image.'"
+                        class="img-fluid rounded-3" alt="'.$product_name.'">
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                      <p class="lead fw-normal mb-2">'.$product_name.'</p>
+                      <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 d-flex">
+                      
+                
+                    
+                        <h6 class="mb-0">'.$quantity.'</h6>
+      
+                      
+                    </div>
+                    
+                    <div class="col-md-4 col-lg-3 col-xl-3 offset-lg-1 ">
+                      <h5 class="mb-0">'.$price.'€ </h5> <h5>';
+                  echo     (  $quantity > 1 ?   ' in total = '.$pro_total :'');
+
+                  echo     (  $discount==="0 %" ? '' : ' discount: '.$discount);
+                  echo '</h5>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+              
+              ';
+
+
+            }
+          
+           echo '
+               <div class="card">
+                    <div class="card-body p-5 d-flex flex-row">
+                        
+                    <div class="form-outline flex-fill">
+                        <label class="form-label" for="form1">Versand Art</label>
+                    </div>
+                    <div class="form-check mr-5">
+                    <input class="form-check-input" type="radio" name="versand" id="dhl" value="DHL" checked>
+                    <label class="form-check-label" for="dhl">
+                     DHL (€12)
+                    </label>
+                  </div>
+                    <div class="form-check mr-5">
+                    <input class="form-check-input" type="radio" name="versand" id="dpd" value="DPD" >
+                    <label class="form-check-label" for="dpd">
+                   DPD (€24)
+                    </label>
+                  </div>
+                 
+                  <div class="form-check mr-5">
+                  <input class="form-check-input" type="radio" name="versand" id="dhl-express" value="DHL-EX">
+                  <label class="form-check-label" for="dhl-express">
+                   DHL Express (€33 )
+                  </label>
+                </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="versand" id="hermes" value="HERMES" disabled>
+                    <label class="form-check-label" for="hermes">
+                      hermes
+                    </label>
+                  </div>
+                    </div>
+                 </div>
+
+                <div class="card mb-4">
+                    <div class="card-body p-4 d-flex flex-row">
+                        
+                    <div class="form-outline flex-fill">
+                        <label class="form-label" for="form1">Total Amount</label>
+                    </div>
+                        <h5 >€<span id="total">'.$total_amt.'</span></h5>
+                    </div>
+                    <div class="form-check p-4 m-4">
+                      <input class="form-check-input" type="checkbox" value="1" id="datenschutz">
+                      <label class="form-check-label" for="flexCheckDefault">
+                      Datenschutzerklärung Akzeptieren
+                       </label>
+                    </div>
+                 </div>
+                <div class="card">
+                
+                    <div class="card-body">
+                        <button type="button" class="btn btn-warning btn-block btn-lg pay-confirm">Bestellung Abschließen</button>
+                    </div>
+                </div>';
+        }
+       
+     }
+    
+
+ }
+    
+ // -------------------proceed to pay end ---------------
+ 
+ // login form start 
+ if(isset($_POST['email'] ) && isset($_POST['password'] ) ){
+    function input_check($data){
+        $data = trim($data);
+        $data = stripcslashes($data);
+        $data = htmlspecialchars($data); 
+       
+        return $data;
+      }
+      function sha512($str,$salt){
+        $hashedpass = hash("sha512",$str.$salt);
+        return $hashedpass;
+      }
+      
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = input_check($_POST['email']);
+        $password = sha512($_POST['password'],'abceree334234');
+        $query = "select id,vorname from users where email='$email' && password = '$password' ";
+       
+        $result = mysqli_fetch_array(mysqli_query($con,$query));
+        if($result > 0){
+          $_SESSION['uid'] = $result["id"];
+          $_SESSION['uname'] = $result["vorname"];
+         //header("location:index.php");
+         echo "welcome ". $_SESSION['uname'];
+
+        }
+        else {
+         
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error ', true, 500);
+
+        }
+      }
+ }
+
+ // login form end
+
+// get order overview start 
+if(isset($_POST['get_order_overview'] )  ){
+  $q="select * from warenkorb where user_id='$user_id' ";
+  $result = mysqli_query($con,$q);
+  if(mysqli_num_rows( $result) >0){
+      $total_amt = 0;
+      while($row = mysqli_fetch_array($result)){
+          $order_id = $row['id'];
+          $product_id = $row['product_id'];
+          $user_id = $row['user_id'];
+          $product_name = $row['product_name'];
+          $product_image = $row['product_image'];
+          $quantity = $row['quantity'];
+          $price = $row['price'];
+          $discount = "0 %";
+          if( $quantity >= 8 && $quantity < 16 ){
+              
+              $pro_total = $row['total_amount'] - ($row['total_amount'] * (8 / 100))  ;
+              $discount = "8 %";
+          }
+          else if($quantity >= 16){
+              $pro_total = $row['total_amount'] - ($row['total_amount'] * (16 / 100))  ;
+              $discount = "16 %";
+
+          }
+          else {
+              $pro_total = $row['total_amount'];
+
+          }
+          
+
+          $price_array = array($pro_total);
+          $total_sum =  array_sum($price_array);
+          $total_amt = $total_amt + $total_sum;
+
+          // create bootstrap card with each order from basket
+          echo '<div class="card rounded-3 mb-4">
+          <div class="card-body p-4">
+            <div class="row d-flex justify-content-between align-items-center">
+              <div class="col-md-1 col-lg-1 col-xl-2">
+                <img
+                  src="'.$product_image.'"
+                  class="img-fluid rounded-3" alt="'.$product_name.'">
+              </div>
+              <div class="col-md-4 col-lg-4 col-xl-3">
+                <p class="lead fw-normal mb-2">'.$product_name.'</p>
+                <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
+              </div>
+              <div class="col-md-1 col-lg-1 col-xl-1 d-flex">
+                
+          
+              
+                  <h6 class="mb-0">'.$quantity.'</h6>
+
+                
+              </div>
+              
+              <div class="col-md-4 col-lg-3 col-xl-3 offset-lg-1 ">
+                <h5 class="mb-0">'.$price.'€ </h5> <h5>';
+            echo     (  $quantity > 1 ?   ' in total = '.$pro_total :'');
+
+            echo     (  $discount==="0 %" ? '' : ' discount: '.$discount);
+            echo '</h5>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+        
+        ';
+
+
+      }
+    
+     echo '
+         <div class="card">
+              <div class="card-body p-5 d-flex flex-row">
+                  
+              <div class="form-outline flex-fill">
+                  <label class="form-label" for="form1">Versand Art</label>
+              </div>
+              <div class="form-check mr-5">
+              <input class="form-check-input" type="radio" name="versand" id="dhl" value="DHL" checked>
+              <label class="form-check-label" for="dhl">
+               DHL (€12)
+              </label>
+            </div>
+              <div class="form-check mr-5">
+              <input class="form-check-input" type="radio" name="versand" id="dpd" value="DPD" >
+              <label class="form-check-label" for="dpd">
+             DPD (€24)
+              </label>
+            </div>
+           
+            <div class="form-check mr-5">
+            <input class="form-check-input" type="radio" name="versand" id="dhl-express" value="DHL-EX">
+            <label class="form-check-label" for="dhl-express">
+             DHL Express (€33 )
+            </label>
+          </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="versand" id="hermes" value="HERMES" disabled>
+              <label class="form-check-label" for="hermes">
+                hermes
+              </label>
+            </div>
+              </div>
+           </div>
+
+          <div class="card mb-4">
+              <div class="card-body p-4 d-flex flex-row">
+                  
+              <div class="form-outline flex-fill">
+                  <label class="form-label" for="form1">Total Amount</label>
+              </div>
+                  <h5 >€<span id="total">'.$total_amt.'</span></h5>
+              </div>
+           </div>
+          <div class="card">
+          
+          
+              <div class="card-body">
+                  <button type="button" class="btn btn-warning btn-block btn-lg pay-confirm">Bestellung Abschließen123</button>
+              </div>
+          </div>';
+  }
+ 
+}
+// get order overview end 
+
+// ---------------- pay confirm start ---------------------
+if(isset($_POST['pay_confirm'] ) &&  isset($_POST['versand'])  && isset($_SESSION['uid']) ){
+
+$order_id = rand(); 
+$versand = $_POST['versand'];
+
+$q = "insert into orders (order_id,product_id,user_id,product_name,product_image, quantity, price,shipping,total_amount)
+select $order_id,product_id,$user_id, product_name ,product_image, quantity,price,'$versand',total_amount from warenkorb where user_id= $user_id";
+$result = mysqli_query($con,$q);
+if($result){
+  $q_w = "delete from warenkorb where user_id='$user_id'    ";
+  $result_w = mysqli_query($con,$q_w);
+  if($result_w){
+    echo "Bestellung ist Abgeshlossen Vielen Dank!!";
+  }
+
+  
+
+}
+else {
+  die("error with order");
+}
+
+}
+// ---------------- pay confirm end ---------------------
 
 
 }

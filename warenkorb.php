@@ -18,7 +18,7 @@
     include_once("header.php") ?> 
       <div class="container">
     
-       <h1>Warenkorb</h1>
+       <h1 id="warenkorb-title">Warenkorb</h1>
        <section class="h-100" style="background-color: #eee;">
   <div class="container h-100 py-5">
     <div class="row d-flex justify-content-center align-items-center h-100">

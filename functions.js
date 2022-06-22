@@ -5,12 +5,25 @@
           method:'post',
           data:{count:1},
           success: function(data){
-            $("#warenkorb-num").html(data)
+            $("#warenkorb-num").html(data);
           }
         })
       }
+      warenkorb_count();
 //-------- get the count of products in basket end ------------
-         
+// proceed to pay after login start // 
+function process_to_pay(){
+    $.ajax({
+        url:'process.php',
+        method:'post',
+        data:{get_order_overview:1},
+        success: function(data){
+        $("#warebkorb-content").html(data)
+          
+        }
+      })
+};
+///   proceed to pay after login end       
          
          
 // ------------- add product to basket start ----------------
@@ -127,3 +140,94 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
   });
 
   // -------------  remove product from  basket end ----------------
+
+  // proceed-to-pay start 
+  $("body").delegate(".proceed-to-pay","click",function(event){
+    event.preventDefault();
+    
+    
+    $.ajax({
+      url:'process.php',
+      method:'post',
+      data:{proceed:1 },
+      success: function(data){
+        $("#warebkorb-content").html(data);
+        $("#warenkorb-title").text("Kasse");
+        
+        
+      },
+      error : function(err){
+        console.log(err);
+      }
+    });
+  });
+
+  //  proceed-to-pay end 
+
+    // login form start 
+    $("body").delegate(".login-form","click",function(event){
+        event.preventDefault();
+        
+        const email = $('#email').val();
+        const password = $('#password').val(); 
+        $.ajax({
+          url:'process.php',
+          method:'post',
+          data:{email , password
+         },
+          success: function(data){
+            
+            $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ${data}  </div>`);
+            warenkorb_count();
+
+            process_to_pay();
+          },
+          error : function(err){
+            $("#warebkorb-content").append('<div class="mt-4 alert alert-danger" role="alert">  Error with email or pass  </div>');
+            console.log(err);
+          }
+        });
+      });
+    
+      //  login form  end 
+
+      // --------- pay-confirm start ---------
+      $("body").delegate(".pay-confirm","click",function(event){
+        event.preventDefault();
+        let versand = $("input[name='versand']:checked").val();
+
+        $('input[type=radio][name=versand]').change(function() {
+          versand = this.value;
+        
+      });
+
+     // let datenschutz =  $("input[type='checkbox']").checked;
+      
+      
+      
+   
+      
+     // alert(datenschutz);
+     // alert(versand);
+     
+        $.ajax({
+          url:'process.php',
+          method:'post',
+          data:{pay_confirm:1,versand
+         },
+          success: function(data){
+
+            
+             $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ${data}  </div>`);
+             $("#warenkorb-title").text("Bestellung");
+            // warenkorb_count();
+
+            // process_to_pay();
+          },
+          error : function(err){
+            // $("#warebkorb-content").append('<div class="mt-4 alert alert-danger" role="alert">  Error with email or pass  </div>');
+            // console.log(err);
+          }
+        });
+      });
+      //---------- pay confirm end -----------
