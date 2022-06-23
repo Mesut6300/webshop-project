@@ -15,7 +15,8 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <?php echo (isset($_SESSION['uname']) ? ' <i class="fas fa-user"  ></i> '.$_SESSION['uname'] : 'Pages'); ?> 
+          <?php echo (isset($_SESSION['uname']) ? ' <i class="fas fa-user"  ></i> '.$_SESSION['uname'] : '
+Kategorien'); ?> 
            
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -34,21 +35,21 @@
             <li><a class="dropdown-item" href="register.php">Register</a></li>
             <?php endif; ?>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            
           </ul>
         </li>
        
       </ul>
-      <form class="d-flex pl-3">
+      <form class="d-flex mr-3 ml-3 ">
         <input class="form-control me-2" type="search" placeholder="Begriff eingeben" aria-label="Suche">
         <button class="btn btn-outline-success" type="submit">Suche</button>
       </form>
-      <form class="d-flex">
+      <form class="d-flex mx-2 ">
         
                      
-                        <a href="warenkorb.php" class="btn btn-outline-light" type="submit">
+                        <a  href="warenkorb.php" class="btn btn-outline-light " type="submit">
                             <i class="bi-cart-fill me-1"></i>
-                            Cart
+                            Warenkorb
                             
                             <span id="warenkorb-num" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                             

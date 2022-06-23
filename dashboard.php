@@ -27,9 +27,12 @@
  
     $result = mysqli_query($con,$query);
     while($row = mysqli_fetch_array($result)){
+      $day =  date('l',strtotime($row['lastactivity']));
+      $lastlogin =  date("d.m.Y", strtotime($row['lastactivity']));
+    
         ?>
         
-        <h3> Hallo <?php echo $row['vorname']." ".$row['nachname'];    ?> wilkommen </h3>
+        <h3> Hallo <?php echo $row['vorname']." ".$row['nachname'];    ?> wilkommen, sie waren zuletzt am <?php echo $day." ".$lastlogin;  ?> angemeldet  </h3>
 
         <?php
     }

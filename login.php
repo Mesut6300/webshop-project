@@ -35,6 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if($result > 0){
     $_SESSION['uid'] = $result["id"];
     $_SESSION['uname'] = $result["vorname"];
+    $q="UPDATE users SET lastactivity = now() WHERE id = ".$result['id'];
+    echo $q;
+    $result_update = mysqli_query($con,$q);
+    
+    
     //header("location:index.php");
     echo "<script>window.location.href='dashboard.php'; </script>";
   }

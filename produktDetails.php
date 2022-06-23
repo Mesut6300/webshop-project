@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <style>
       img{
         max-height:300px;
@@ -45,12 +45,12 @@
                             <span class="text-decoration-line-through"> <?php echo $row['price']+50 ?>€</span>
                             <span> <?php echo $row['price'] ?>€</span>
                         </div>
-                        <p class="lead"><?php echo utf8_encode( $row['description']) ?></p>
+                        <p class="lead"><?php echo  $row['description'] ?></p>
                         <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                            <!-- <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" /> -->
+                            <button pid="<?php echo $row['id']; ?>" class="btn btn-outline-dark flex-shrink-0 add-btn" type="button">
                                 <i class="bi-cart-fill me-1"></i>
-                                Add to cart
+                                Hinzuzufügen
                             </button>
                         </div>
                     </div>
