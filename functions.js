@@ -65,6 +65,21 @@ function process_to_pay(){
 
   // ------------- get all  products in basket (for the loggedin user ) from database  end ----------------
 
+  // ------------- get all  products in Order table (for the loggedin user ) from database start ----------------
+ function  bestellungen_products_list(){
+  $.ajax({
+    url:'process.php',
+    method:'post',
+    data:{get_bestellungen_products:1},
+    success: function(data){
+    $("#warebkorb-content").html(data)
+      
+    }
+  })
+}
+
+// ------------- get all  products in Order table  (for the loggedin user ) from database  end ----------------
+
           
  // ------------- increase products in basket start ----------------
 
@@ -231,3 +246,31 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
         });
       });
       //---------- pay confirm end -----------
+
+// -------------buy again start  ----------------
+
+ $("body").delegate(".buy-now","click",function(event){
+  event.preventDefault();
+  const bid  = $(this).attr('bid');
+  const prid = $(this).attr('prid');
+  console.log(bid, prid);
+   
+ 
+
+ 
+  $.ajax({
+    url:'process.php',
+    method:'post',
+    data:{bid , prid },
+    success: function(data){
+      console.log(data);
+        warenkorb_count();
+        bestellungen_products_list()
+
+    },
+    error : function(err){
+     // alert(err);
+    }
+  });
+});
+// -------------buy again end  ----------------

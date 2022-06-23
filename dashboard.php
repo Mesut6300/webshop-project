@@ -26,13 +26,47 @@
     $query = "select * from users where id=$userId";
  
     $result = mysqli_query($con,$query);
-    while($row = mysqli_fetch_array($result)){
+   ?>
+
+    <h1>Dashboard</h1>
+     <!-- Background image -->
+     <?
+     while($row = mysqli_fetch_array($result)){
       $day =  date('l',strtotime($row['lastactivity']));
       $lastlogin =  date("d.m.Y", strtotime($row['lastactivity']));
     
         ?>
+        <div
+    id="intro-example"
+    class="p-5 text-center bg-image"
+    style="background-image: url('https://images.pexels.com/photos/3586966/pexels-photo-3586966.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');"
+  >
+    <div class="mask mt-5 mb-5" style="background-color: rgba(0, 0, 0, 0.4);">
+      <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white mt-3">
+          <h3 class="mb-3">Hallo <?php echo $row['vorname']." ".$row['nachname'];    ?></h3>
+          <h4 class="mb-4">     sie waren zuletzt am <?php echo $day." ".$lastlogin;  ?> angemeldet  </h4> 
+          <a
+            class="btn btn-outline-light btn-lg m-3"
+            href="bestellungen.php"
+            role="button"
+            rel="nofollow"
+            target="_blank"
+          >Gekaufte Artikel</a
+          >
+          <a
+            class="btn btn-outline-light btn-lg m-2"
+            href="warenkorb.php"
+            target="_blank"
+            role="button"
+          >Warenkorb</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
         
-        <h3> Hallo <?php echo $row['vorname']." ".$row['nachname'];    ?> wilkommen, sie waren zuletzt am <?php echo $day." ".$lastlogin;  ?> angemeldet  </h3>
+        
 
         <?php
     }
@@ -40,7 +74,8 @@
     
  
     ?> 
-    <h1>Dashboard</h1>
+  
+  <!-- Background image -->
     
     </div>
     <?php include_once("footer.php") ?> 

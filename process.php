@@ -609,6 +609,151 @@ else {
 }
 // ---------------- pay confirm end ---------------------
 
+//------------------ get_bestellungen_products  start ----------------
+if(isset($_POST['get_bestellungen_products'] )   && isset($_SESSION['uid']) ){
+    $q="select * from orders where user_id='$user_id' ";
+        $result = mysqli_query($con,$q);
+        if(mysqli_num_rows( $result) >0){
+          
+            $total_amt = 0;
+            while($row = mysqli_fetch_array($result)){
+             
+                $order_id = $row['order_id'];
+                $product_id = $row['product_id'];
+                $user_id = $row['user_id'];
+                $product_name = $row['product_name'];
+                $product_image = $row['product_image'];
+                $quantity = $row['quantity'];
+                $price = $row['price'];
+                $shipping = $row['shipping'];
+                $discount = "0 %";
+                if( $quantity >= 8 && $quantity < 16 ){
+                    
+                    $pro_total = $row['total_amount'] - ($row['total_amount'] * (8 / 100))  ;
+                    $discount = "8 %";
+                }
+                else if($quantity >= 16){
+                    $pro_total = $row['total_amount'] - ($row['total_amount'] * (16 / 100))  ;
+                    $discount = "16 %";
+
+                }
+                else {
+                    $pro_total = $row['total_amount'];
+
+                }
+                
+
+                $price_array = array($pro_total);
+                $total_sum =  array_sum($price_array);
+                $total_amt = $total_amt + $total_sum;
+
+                // create bootstrap card with each order from basket
+                echo '<div class="card rounded-3 mb-4">
+                <div class="card-body p-4">
+                  <div class="row d-flex justify-content-between align-items-center">
+                    <div class="col-md-2 col-lg-2 col-xl-2">
+                    <span   style ="font-size:16px;">BTL: '.$order_id.'</span>
+                      <img
+                        src="'.$product_image.'"
+                        class="img-fluid rounded-3" alt="'.$product_name.'">
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                      <p class="lead fw-normal mb-2">'.$product_name.'</p>
+                      <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 d-flex">
+                      
+                
+                    
+                        <h6 class="mb-0">'.$quantity.'</h6>
+      
+                      
+                    </div>
+                    
+                    <div class="col-md-4 col-lg-3 col-xl-3 offset-lg-1 ">
+                      <h5 class="mb-0">'.$price.'€ </h5> <h5>';
+                  echo     (  $quantity > 1 ?   ' in total = '.$pro_total :'');
+
+                  echo     (  $discount==="0 %" ? '' : ' discount: '.$discount);
+                  echo '</h5>
+                  <button prid="'.$product_id.'" bid="'.$order_id.'" class="btn btn-warning btn-block btn-sm buy-now "> 1 Click buy again </button>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+              
+              ';
+
+
+            }
+          
+           echo '
+               <div class="card">
+                   
+
+                <div class="card mb-4">
+                    <div class="card-body p-4 d-flex flex-row">
+                        
+                    <div class="form-outline flex-fill">
+                        <label class="form-label" for="form1">Total Amount</label>
+                    
+                    </div>
+                        <h5 >€<span id="total">'.$total_amt.'</span></h5>
+                </div>
+                    
+                 </div>
+                ';
+        }
+      
+    
+}
+
+//------------------ get_bestellungen_products  start ----------------
+
+//------------------ buy again  START ---------------
+if(isset($_POST['prid'])   && isset($_SESSION['uid']) && isset($_POST['bid']) ){
+  $prid = $_POST['prid'];
+  $bid = $_POST['bid'];
+  $q="select * from orders where user_id='$user_id' and product_id = '$prid' and order_id ='$bid' ";
+        $result = mysqli_query($con,$q);
+        if(mysqli_num_rows( $result) >0){
+          $row = mysqli_fetch_array($result);
+         // echo $row['product_name'];
+          $order_id = rand();
+          $product_name = $row['product_name'];
+          $product_id = $row['product_id'];
+
+          $product_image = $row['product_image'] ;
+          
+          $product_price = $row['price'];
+          $shipping= $row['shipping'];
+          $total_amount= $row['price'];
+
+          
+
+ 
+
+          $q_i = "insert into orders (order_id,product_id,user_id,product_name,product_image, quantity, price,shipping,total_amount)
+          VALUES('$order_id','$product_id','$user_id','$product_name','$product_image','1','$product_price','$shipping','$total_amount')";
+          
+          $result_i = mysqli_query($con,$q_i);
+          if($result_i){
+                 
+               
+                  echo "die neue Bestellung ist Abgeshlossen Vielen Dank!!";
+          }
+          else {
+            die("Error mit der Bestellung!!!");
+          }
+
+
+
+   }
+  
+}
+
+//------------------ buy again END ---------------
 
 }
 
