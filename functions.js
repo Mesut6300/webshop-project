@@ -274,3 +274,34 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
   });
 });
 // -------------buy again end  ----------------
+
+
+// login form with ajax start 
+
+
+
+$("#ajax-button").delegate("click",function(event){
+    event.preventDefault();
+    alert("ajax-login");
+    
+    // const email = $('#email').val();
+    // const password = $('#password').val(); 
+    // $.ajax({
+    //   url:'loginprocess.php',
+    //   method:'post',
+    //   data:{email , password
+    //  },
+    //   success: function(data){
+    //     alert(data);
+    //    // $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ${data}  </div>`);
+       
+    //   },
+    //   error : function(err){
+    //     $("#warebkorb-content").append('<div class="mt-4 alert alert-danger" role="alert">  Error with email or pass  </div>');
+    //     console.log(err);
+    //   }
+    // });
+  });
+
+
+// login form with ajax end
