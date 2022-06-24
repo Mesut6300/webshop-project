@@ -48,7 +48,7 @@ else{ // email ist nicht existeirt
  $password = sha512($randomPassword,'abceree334234');
    
 
- $query = "insert into users (vorname,nachname,email,password,initialPass) values('$vorname','$nachname','$emailInput','$password','$randomPassword')";
+ $query = "insert into users (vorname,nachname,email,password,initialPass,status) values('$vorname','$nachname','$emailInput','$password','$randomPassword','0')";
 // echo $query;
  $result = mysqli_multi_query($con,$query);
   if($result){ // user registerd 
