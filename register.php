@@ -8,7 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+   <script type="text/javascript">
+        (function() {
+            // https://dashboard.emailjs.com/admin/account
+            emailjs.init('POBDAzf4ddSOMpcPm');
+        })(); 
+      </script>
+  </head>
 <body>
 <?php include_once("header.php");
 
@@ -93,7 +100,21 @@
                     
             },
             success: function(data){
-              alert(data);
+              console.log(data)
+              const json_data = JSON.parse(data);
+              console.log(json_data);
+              emailjs.send("service_hnto9q5","template_rv9tu18",{
+              to_name: json_data[0],
+              from_name: "Webshop Team",
+              message: "Hallo ihre password ist: "+json_data[2],
+              reply_to: json_data[1],
+              user_email: json_data[1]
+              })
+              .then(function() {
+                              console.log('SUCCESS!');
+                          }, function(error) {
+                              console.log('FAILED...', error);
+                          });
               
             },
             error : function(err){

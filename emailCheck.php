@@ -52,8 +52,16 @@ else{ // email ist nicht existeirt
 // echo $query;
  $result = mysqli_multi_query($con,$query);
   if($result){ // user registerd 
+    $myObj = array(
+      0 => $_POST['vorname'],
+      1 => $_POST['email'],
+      2 => $randomPassword
+    );
+ 
+
+    echo json_encode($myObj);
     
-     echo "user registerd successfully";
+     //echo "user registerd successfully";
 
      // email send 
      // after login show form to change password
