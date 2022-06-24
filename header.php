@@ -46,7 +46,13 @@ Kategorien'); ?>
       </form>
       <form class="d-flex mx-2 ">
         
-                     
+                      <a  href="#" class="btn btn-outline-light me-2 " type="submit">
+                              <i class="bi-cart-fill me-1"></i>
+                            online <span ><?php echo isset($_SESSION['online']) ? $_SESSION['online'] : "0"   ?></span>
+                            
+                            <span id="warenkorb-num" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            
+                       </a>
                         <a  href="warenkorb.php" class="btn btn-outline-light " type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Warenkorb

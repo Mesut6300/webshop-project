@@ -118,7 +118,7 @@ include_once("header.php");
     $.ajax({
       url:'loginprocess.php',
       method:'post',
-      data:{email , password
+      data:{email , password, width: screen.width, height:screen.height
      },
       success: function(data){
         //alert(data);

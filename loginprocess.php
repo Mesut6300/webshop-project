@@ -1,6 +1,7 @@
 <?php
 include_once('includes/db.php');
 session_start();
+
 function input_check($data){
   $data = trim($data);
   $data = stripcslashes($data);
@@ -22,29 +23,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if($result > 0){
     $_SESSION['uid'] = $result["id"];
     $_SESSION['uname'] = $result["vorname"];
-    $q="UPDATE users SET lastactivity = now() WHERE id = ".$result['id'];
-    //echo $q;
+    $_SESSION['email'] = $result["email"];
+    $_SESSION['screen_width'] = $_POST['width'];
+    $_SESSION['screen_height'] = $_POST['height'];
+    $q="UPDATE users SET lastactivity = now() ,status =1 WHERE id = ".$result['id'];
+    
     $result_update = mysqli_query($con,$q);
     $q_d="delete from warenkorb where user_id=0    ";
    
     
     $result_d =  mysqli_query($con,$q_d);
 
-   
-
-
-   
-    // $myObj = array(
-    //   0 => $result["vorname"],
-    //   1 => $result["email"],
-    //   2 => $_POST['password']
-    // );
- 
-
-    // echo json_encode($myObj);
-   // echo  $_POST['password'];
+    $client = $_SERVER['HTTP_USER_AGENT'][1];
     
-    //header("location:index.php");
+    $resolution = $_SESSION['screen_width']." x ".$_SESSION['screen_height']." px"; 
+    $query_log = "insert into users_logs (user_id,screen_resolution,os) VALUES('".$result["id"]."','$resolution','windows 10')";
+    $result_log = mysqli_query($con,$query_log);
+    if($result_log){
+        echo "added to users logs!";
+        $q_online = "select * from users where status=1 ";
+  
+        $count_online = mysqli_num_rows( mysqli_query($con,$query));
+        $_SESSION['online'] = $count_online;
+       
+    }
+
+   
+  
     echo "<script>window.location.href='dashboard.php'; </script>";
   }
   else {

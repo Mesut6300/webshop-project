@@ -168,6 +168,40 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
       success: function(data){
         $("#warebkorb-content").html(data);
         $("#warenkorb-title").text("Kasse");
+        let versand = $("input[name='versand']:checked").val();
+        let versandKosten= 0;
+        function getKost(num){
+            switch(num){
+                case "DHL":
+                    return 12;
+                    
+                case "DPD" :
+                    return 24;
+                    
+                case "DHL-EX" :
+                    return 33;
+                    
+               default : 
+               return 12;
+    
+            }
+
+        }
+        versandKosten = getKost(versand);
+        
+        let totalVal = Number($("#total").text());
+        
+        $("#total").text(totalVal + versandKosten );
+        $("input[name='versand']").change(function(){
+            versand = $("input[name='versand']:checked").val();
+            
+            versandKosten = getKost(versand);
+            
+            $("#total").text(totalVal + versandKosten );
+
+
+        });
+
         
         
       },
@@ -215,25 +249,41 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
           versand = this.value;
         
       });
-
-     // let datenschutz =  $("input[type='checkbox']").checked;
-      
-      
-      
-   
-      
-     // alert(datenschutz);
-     // alert(versand);
+  
+       const datenschutz =$('#datenschutz').is(':checked');
+       
+       console.log(datenschutz);
+       if(!datenschutz){
+         alert("you have to accept");
+         return;
+       }
      
+       
         $.ajax({
           url:'process.php',
           method:'post',
           data:{pay_confirm:1,versand
          },
           success: function(data){
-
-            
-             $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ${data}  </div>`);
+            console.log(data);
+           // return;
+            const json_data = JSON.parse(data);
+            console.log(json_data);
+            emailjs.send("service_hnto9q5","template_rv9tu18",{
+            to_name: json_data[0],
+            from_name: "Webshop Team",
+            message: `Hallo ihre Bestellung wurde bestatigt - BestellNummer : ${json_data[2]}
+            die versand wird durch ${json_data[3]} und kostet ${json_data[4]} euro.
+            `,
+            reply_to: json_data[1],
+            user_email: json_data[1]
+            })
+            .then(function() {
+                            console.log('SUCCESS!');
+                        }, function(error) {
+                            console.log('FAILED...', error);
+                        });
+             $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ihre Bestellung ist abgeshlossen vielen dank!  </div>`);
              $("#warenkorb-title").text("Bestellung");
             // warenkorb_count();
 
@@ -264,8 +314,31 @@ $("body").delegate(".remove-product-from-warenkorb","click",function(event){
     data:{bid , prid },
     success: function(data){
       console.log(data);
+       
         warenkorb_count();
-        bestellungen_products_list()
+        bestellungen_products_list();
+        const json_data = JSON.parse(data);
+            console.log(json_data);
+            emailjs.send("service_hnto9q5","template_rv9tu18",{
+            to_name: json_data[0],
+            from_name: "Webshop Team",
+            message: `Hallo ihre Bestellung wurde bestatigt - BestellNummer : ${json_data[2]}
+            Sie haben ${json_data[5]} gekauft und die menge ist  ${json_data[4]} 
+            die versand wird durch ${json_data[3]} 
+            ihre bestellung kostet  ${json_data[6]} euro.
+            `,
+            reply_to: json_data[1],
+            user_email: json_data[1]
+            })
+            .then(function() {
+                            console.log('SUCCESS!');
+                          //  $("#warebkorb-content").html(`<div class="mt-4 alert alert-success" role="alert"> ihre Bestellung ist abgeshlossen vielen dank!  </div>`);
+                        }, function(error) {
+                            console.log('FAILED...', error);
+                        });
+            
+          
+            
 
     },
     error : function(err){

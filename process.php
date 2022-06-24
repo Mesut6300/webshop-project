@@ -372,13 +372,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                  
                   <div class="form-check mr-5">
-                  <input class="form-check-input" type="radio" name="versand" id="dhl-express" value="DHL-EX">
+                  <input price="33" class="form-check-input" type="radio" name="versand" id="dhl-express" value="DHL-EX">
                   <label class="form-check-label" for="dhl-express">
                    DHL Express (€33 )
                   </label>
                 </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="versand" id="hermes" value="HERMES" disabled>
+                    <input  class="form-check-input" type="radio" name="versand" id="hermes" value="HERMES" disabled>
                     <label class="form-check-label" for="hermes">
                       hermes
                     </label>
@@ -588,15 +588,48 @@ if(isset($_POST['pay_confirm'] ) &&  isset($_POST['versand'])  && isset($_SESSIO
 
 $order_id = rand(); 
 $versand = $_POST['versand'];
+$versandKosten = 0;
+switch ($versand) {
+  case "DHL":
+    $versandKosten = 12;
+      break;
+  case "DPD":
+    $versandKosten = 24;
+      break;
+      case "DHL-EX":
+        $versandKosten = 33;
+      break;
+}
 
 $q = "insert into orders (order_id,product_id,user_id,product_name,product_image, quantity, price,shipping,total_amount)
 select $order_id,product_id,$user_id, product_name ,product_image, quantity,price,'$versand',total_amount from warenkorb where user_id= $user_id";
 $result = mysqli_query($con,$q);
 if($result){
+  $q_u = "update orders set total_amount = total_amount + $versandKosten where order_id = '$order_id' and user_id='$user_id' ";
+  $result_u = mysqli_query($con,$q_u);
   $q_w = "delete from warenkorb where user_id='$user_id'    ";
   $result_w = mysqli_query($con,$q_w);
-  if($result_w){
-    echo "Bestellung ist Abgeshlossen Vielen Dank!!";
+  if($result_w &&  $result_u){
+    // user registerd 
+      $q_user = "select * from users where id='$user_id'";
+      $result_user = mysqli_query($con,$q_user);
+      $row = mysqli_fetch_array($result_user);
+      
+   
+          
+         
+        $myObj = array(
+          0 => $row['vorname'],
+          1 => $row['email'],
+          2 => $order_id,
+          3 => $versand,
+          4 => $versandKosten
+        );
+          //echo $myObj;
+          echo json_encode($myObj);
+    
+      
+  
   }
 
   
@@ -627,6 +660,7 @@ if(isset($_POST['get_bestellungen_products'] )   && isset($_SESSION['uid']) ){
                 $price = $row['price'];
                 $shipping = $row['shipping'];
                 $discount = "0 %";
+                $total_amount =   $row['total_amount'];
                 if( $quantity >= 8 && $quantity < 16 ){
                     
                     $pro_total = $row['total_amount'] - ($row['total_amount'] * (8 / 100))  ;
@@ -671,7 +705,7 @@ if(isset($_POST['get_bestellungen_products'] )   && isset($_SESSION['uid']) ){
                     </div>
                     
                     <div class="col-md-4 col-lg-3 col-xl-3 offset-lg-1 ">
-                      <h5 class="mb-0">'.$price.'€ </h5> <h5>';
+                      <h5 class="mb-0">'.$total_amount.'€ </h5> <h5>';
                   echo     (  $quantity > 1 ?   ' in total = '.$pro_total :'');
 
                   echo     (  $discount==="0 %" ? '' : ' discount: '.$discount);
@@ -723,12 +757,13 @@ if(isset($_POST['prid'])   && isset($_SESSION['uid']) && isset($_POST['bid']) ){
           $order_id = rand();
           $product_name = $row['product_name'];
           $product_id = $row['product_id'];
-
+          $product_quantity = $row['quantity'];
           $product_image = $row['product_image'] ;
           
           $product_price = $row['price'];
           $shipping= $row['shipping'];
-          $total_amount= $row['price'];
+          $total_amount= $row['total_amount'];
+          
 
           
 
@@ -739,9 +774,20 @@ if(isset($_POST['prid'])   && isset($_SESSION['uid']) && isset($_POST['bid']) ){
           
           $result_i = mysqli_query($con,$q_i);
           if($result_i){
-                 
+            
+            $myObj = array(
+              0 =>  $_SESSION['uname'],
+              1 =>  $_SESSION['email'],
+              2 => $order_id,
+              3 => $shipping,
+              4 => $product_quantity,
+              5 => $product_name,
+              6 => $total_amount
+            );
+              //echo $myObj;
+              echo json_encode($myObj);
                
-                  echo "die neue Bestellung ist Abgeshlossen Vielen Dank!!";
+                  //echo "die neue Bestellung ist Abgeshlossen Vielen Dank!!";
           }
           else {
             die("Error mit der Bestellung!!!");
